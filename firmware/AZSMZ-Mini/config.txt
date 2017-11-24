@@ -1,0 +1,525 @@
+#######################################
+###									###
+###			GENERAL INFO			###
+###									###
+#######################################
+
+# Config: As of 15th may 2016: config.txt verified.
+# Firmware is Smoothieware.
+# Provided config-file is for the AZSMZ-mini V2.1 and to use in the 3D-printer ‚DICE’.
+# More information at www.well-engineered.net
+
+# there are advanced options to configure a pin:
+# 	!	invert pin
+# 	o	set pin to open drain
+# 	^	set pin to pull up
+# 	v	set pin to pull down
+# 	-	to set no pullup
+# 	@	to set repeater mode
+
+# EXAMPLE:
+# set_example_pin	1.23!^ 
+# will set the pin to inverted pull up
+
+
+#######################################
+###									###
+###			GENERAL MOTION 			###
+###									###
+#######################################
+
+	#=================#
+	# MOTION-SETTINGS #
+	#=================#
+
+arm_solution				corexy	 	# Sets the arm solution for this machine. The arm solution converts position in millimetres into actuator positions ( usually in steps ). On cartesian machines those are proportional to each other, but for example on a linear delta machine, some fancy math is required for the conversion. Possible values : cartesian, corexy, linear_delta, rotatable_cartesian, morgan
+
+alpha_steps_per_mm			80			# Steps per millimetre for alpha stepper motor ( this is the X axis for a cartesian machine )
+beta_steps_per_mm			80			# Steps per millimetre for beta stepper motor ( this is the Y axis for a cartesian machine )
+gamma_steps_per_mm			800			# Steps per millimetre for gamma stepper motor ( this is the Z axis for a cartesian machine )
+
+acceleration					8000	# Acceleration in millimetres/second/second. Higher values make your machine faster and shakier, lower values make your machine slower and sturdier. This is generally proportional to the weight of the tool you are trying to move.
+z_acceleration					2000	# Acceleration for Z only moves, same as acceleration but for movements of the Z axis. Do not set this value if you use a delta arm solution.
+acceleration_ticks_per_second	1000	# Number of times per second the speed is updated. Do not modify unless you know exactly what you are doing !
+
+junction_deviation			0.3			# Similar to the old "max_jerk", in millimeters. Defines how much the machine slows down when decelerating proportional to the vector angle of change of direction. See here and here. Lower values mean being more careful, higher values means being faster and have more jerk
+z_junction_deviation		0			# Junction deviation for Z only moves, -1 uses junction_deviation, 0 disables junction_deviation on z moves. Do not set this value if you use a delta arm solution.
+
+	#================#
+	# SPEED SETTINGS #
+	#================#
+
+default_feed_rate			30000		# Default rate for G1/G2/G3 moves in millimetres/minute. This is overrided by the first F ( feedrate ) parameter after reset, and never used again.
+default_seek_rate			30000		# Default rate for G0 moves in millimetres/minute
+
+x_axis_max_speed			49980		# Maximum allowable speed for the X axis, in millimetres/minute. Smoothie will never exceed that value for that axis.
+y_axis_max_speed			49980		# Maximum allowable speed for the Y axis, in millimetres/minute. Smoothie will never exceed that value for that axis.
+z_axis_max_speed			1800		# Maximum allowable speed for the Z axis, in millimetres/minute. Smoothie will never exceed that value for that axis.
+
+alpha_max_rate				120000		# Maximum allowable speed for this actuator ( as opposed to axis, they are the same on a cartesian machine, but not on a delta machine for example ), in millimetres/minute.
+beta_max_rate				120000		# Maximum allowable speed for this actuator, in millimetres/minute.
+gamma_max_rate				1800		# Maximum allowable speed for this actuator, in millimetres/minute.
+
+	#==================#
+	# SPECIAL SETTINGS #
+	#==================#
+
+mm_per_arc_segment			0.5			# Arcs are cut into segments ( lines ), this is the length for those segments. Smaller values mean more resolution, higher values mean faster computation
+planner_queue_size			32			# Defines how many blocks ( line segments ) are stored in RAM for look-ahead acceleration calculation. Do not change this unless you know exactly what you are doing !
+minimum_planner_speed		20			# Sets the minimum planner speed in millimetres/sec. This is the lowest speed the planner will ever set a move to. Not generally useful.
+microseconds_per_step_pulse	1			# Duration of step pulses to the stepper motor drivers, in microseconds
+base_stepping_frequency		100000		# Base frequency for stepping, higher values gives smoother movement. Do not modify unless you know exactly what you are doing, 100khz is the only officially supported value.
+
+
+#######################################
+###									###
+###			STEPPER MOTORS 			###
+###									###
+#######################################
+
+	#=================#
+	# Slot 1 - empty  #
+	#=================#
+
+## step_pin		2.0		# Pin for stepper step signal
+## dir_pin		0.5!	# Pin for stepper direction
+## en_pin		0.4		# Pin for enable pin
+
+
+	#=================#
+	# Slot 2 - X-AXIS #
+	#=================#
+
+alpha_step_pin		2.1		# Pin for alpha stepper step signal
+alpha_dir_pin		0.11!	# Pin for alpha stepper direction
+alpha_en_pin		0.10	# Pin for alpha enable pin
+#alpha_current		1.0		# M1 stepper motor driver current, in Amperes.
+
+	#=================#
+	# Slot 3 - Y-AXIS #
+	#=================#
+
+beta_step_pin		2.2		# Pin for beta stepper step signal
+beta_dir_pin		0.20!	# Pin for beta stepper direction
+beta_en_pin			0.19	# Pin for beta enable
+#beta_current		1.0		# M2 stepper motor driver current, in Amperes.
+
+	#=================#
+	# Slot 4 - Z-AXIS #
+	#=================#
+
+gamma_step_pin		2.3		# Pin for gamma stepper step signal
+gamma_dir_pin		0.22!	# Pin for gamma stepper direction
+gamma_en_pin		0.21	# Pin for gamma enable
+#gamma_current		1.0		# M3 stepper motor driver current, in Amperes.
+
+
+	#===================#
+	# Slot 5 - Extruder #
+	#===================#
+
+extruder.hotend_1.step_pin		2.8		# Pin for extruder stepper motor driver's step signal
+extruder.hotend_1.dir_pin		2.13!	# Pin for extruder stepper motor driver's direction signal
+extruder.hotend_1.en_pin		4.29	# Pin for extruder stepper motor driver's enable signal
+
+
+###################################
+###								###
+###			EXTRUDER 			###
+###								###
+###################################
+
+	#==========#
+	# HOTEND 1 #
+	#==========#
+
+extruder.hotend_1.enable				true	# Whether to activate the extruder module at all. All configuration is ignored if false. Each time an extruder.module_name.enable line is encountered, an extruder module with the name «module_name» will be created.
+
+extruder.hotend_1.steps_per_mm			145		# Steps/millimetre for the extruder stepper motor. This is the number of steps to move one millimetre of filament. Learn more
+#extruder.hotend_1.filament_diameter	1.70	# Filament diameter, in millimetres, used for volumetric extrusion control.
+extruder.hotend_1.default_feed_rate		1200	# Default rate in millimetres/minute for moves where only the extruder moves. This is only used if you have never provided a feedrate via the F parameter. Once you specify a F parameter, it will be used as the Extruder feed rate until you reset the board.
+extruder.hotend_1.acceleration			500		# Acceleration for the extruder stepper motor, in millimetres/second/second
+extruder.hotend_1.max_speed				100		# Maximum allowable speed for the extruder stepper motor, in millimetres/second
+
+extruder.hotend_1.x_offset				0		# Extruder offset from origin in millimetres for the X axis. This is useful when you have multiple extruders to specify the offset from each extruder to the first one.
+extruder.hotend_1.y_offset				0		# Extruder offset from origin in millimetres for the Y axis.
+extruder.hotend_1.z_offset				0		# Extruder offset from origin in millimetres for the Z axis.
+
+extruder.hotend_1.retract_length			2		# Retract length in millimetres. Retract is a retractation of the filament called using the G10 G-code. It is recovered ( reverted ) using the G11 G-code. Learn more about retractation
+extruder.hotend_1.retract_feedrate			60		# Retract feed-rate ( filament speed ) in millimetres/second
+extruder.hotend_1.retract_recover_length	0		# Additional length when recovering ( if you retract by 1mm, you will be recovering by 1mm plus this value )
+extruder.hotend_1.retract_recover_feedrate	8		# Recovery feed-rate in millimetres/second (should be less than retract feedrate)
+extruder.hotend_1.retract_zlift_length		0		# Z-lift on retract in millimeters, set to 0 if you want to disable retraction Z-lift. Z-lift is a small increase in the Z axis position when retracting.
+extruder.hotend_1.retract_zlift_feedrate	1800	# Z-lift feed-rate in millimetres/minute ( Note : mm/min NOT mm/sec)
+
+
+###############################################
+###											###
+###			TEMPERATURE CONTROL 			###
+###											###
+###############################################
+
+	#==========#
+	# HOTEND 1 #
+	#==========#
+
+# GENERAL SETTINGS
+temperature_control.hotend1.enable				true		# Whether to activate this temperaturecontrol module. You can create as many temperaturecontrol modules as you want, simply by giving a new module a name, and setting it's enable option to true
+
+temperature_control.hotend1.designator			T			# The letter this module's temperature will be identified as in the M105 command's answer. For example here the value is T, so M105 will answer ok T:23.4 /0.0 @0
+temperature_control.hotend1.max_temp			300			# If set, no temperature above this will be accepted and if the temperature exceeds this value the system will be forced into a HALT state.
+
+temperature_control.hotend1.sensor				thermistor	# Set the type of sensor used to read temperature. Values can be thermistor for the usual thermistor reading via ADC method, or max31855 to read values from a thermocouple over SPI. See Reading a thermocouple
+temperature_control.hotend1.thermistor_pin		0.23		# Pin for the thermistor to read.
+temperature_control.hotend1.heater_pin			2.4			# Pin that controls the heater. This can be used to control a Mosfet on board or an external Solid State Relay. Set to nc if a readonly thermistor is being defined
+temperature_control.hotend1.thermistor			EPCOS100K	# Set the thermistor model for this module. Several different common models are pre-defined, see "http://smoothieware.org/temperaturecontrol#toc6" for a list
+
+# PWM-SETTINGS
+temperature_control.hotend1.readings_per_second	20			# How many times per second to read temperature from the sensor.
+temperature_control.hotend1.pwm_frequency		2000		# How many times per second to switch the heating element on or off. Set to a low value ( 20 ) if using a Solid State Relay.
+temperature_control.hotend1.max_pwm				255			# Maximum PWM value for the heating element. This can be from 0 to 255 . 64 is a good value if driving a 12v resistor with 24v. 255 is the default and the normal value if you are using the right voltage for your heating element.
+
+# BANG-BANG-SETTINGS
+temperature_control.hotend1.bang_bang			false	# Set to true to use bang bang control rather than PID
+temperature_control.hotend1.hysteresis			2.0		# Set to the temperature in degrees C to use as hysteresis for bang bang control
+
+# PID-SETTINGS
+temperature_control.hotend1.p_factor			81.0	# P factor for PID temperature regulation - Use "81.0" for an E3D 40W@24V
+temperature_control.hotend1.i_factor			9.559	# I factor for PID temperature regulation - Use "9.559" for an E3D 40W@24V
+temperature_control.hotend1.d_factor			172		# D factor for PID temperature regulation - Use "172" for an E3D 40W@24V
+temperature_control.hotend1.i_max				255		# Maximum value for the I variable in the PID control. This should usually be set to about the same value as max_pwm ( as a rule of thumb, it is not actually a pwm setting ). This helps with preventing overshoot when initially heating up. If you get a strong ( >10°C ) overshoot on startup, try setting this to a value lower than max_pwm
+
+# M-CODES
+temperature_control.hotend1.get_m_code			105		# Calling this M-code will return the current temperature.
+temperature_control.hotend1.set_m_code			104		# This is the M-code for simply setting the temperature. For example here, the value is 104 so you use M104 S50 to set this module's heater's temperature to 50.
+temperature_control.hotend1.set_and_wait_m_code	109		# This is the M-code for setting the temperature then waiting for that temperature to be reached before doing anything. For example here, the value is 109 so you use M109 S50 to set this module's heater's temperature to 50 and then wait.
+
+# MANUAL THERMISTOR SETTINGS
+#temperature_control.hotend1.beta				4066	# Manually set the beta value for your thermistor. This is useful if your thermistor is not in the common pre-defined models.
+#temperature_control.hotend1.r0					100000	# Manually set the r0 resistance value for your thermistor. This is useful if your thermistor is not in the common pre-defined models. Besides beta and r0 which are properties of your thermistor, you can also set the r1, r2 and t0 values, but those are properties of your board so they usually never have to be changed.
+#temperature_control.hotend1.chip_select_pin	0.16	# If the sensor is set to max31855, sets the chip select pin for the SPI port. This allows you to have multiple sensors sharing the same SPI port, as long as they each get a chip select ( CS ) pin.
+#temperature_control.hotend1.spi_channel		0		# If the sensor is set to max31855, SPI channel using which to talk to the thermocouple chip.
+
+	#============#
+	# HEATED BED #
+	#============#
+
+# GENERAL SETTINGS
+temperature_control.bed.enable              true
+temperature_control.bed.designator			B				# The letter this module's temperature will be identified as in the M105 command's answer. For example here the value is T, so M105 will answer ok T:23.4 /0.0 @0
+temperature_control.bed.max_temp			135				# If set, no temperature above this will be accepted and if the temperature exceeds this value the system will be forced into a HALT state.
+
+temperature_control.bed.sensor				thermistor		# Set the type of sensor used to read temperature. Values can be thermistor for the usual thermistor reading via ADC method, or max31855 to read values from a thermocouple over SPI. See Reading a thermocouple
+temperature_control.bed.thermistor_pin		0.25			# Pin for the thermistor to read. 
+temperature_control.bed.heater_pin			2.5				# Pin that controls the heater. This can be used to control a Mosfet on board or an external Solid State Relay. Set to nc if a readonly thermistor is being defined
+temperature_control.bed.thermistor			Honeywell100K	# Set the thermistor model for this module. Several different common models are pre-defined, see here for a list
+
+# PWM-SETTINGS
+temperature_control.bed.readings_per_second	20		# How many times per second to read temperature from the sensor.
+temperature_control.bed.pwm_frequency		2000	# How many times per second to switch the heating element on or off. Set to a low value ( 20 ) if using a Solid State Relay.
+temperature_control.bed.max_pwm				255		# Maximum PWM value for the heating element. This can be from 0 to 255 . 64 is a good value if driving a 12v resistor with 24v. 255 is the default and the normal value if you are using the right voltage for your heating element.
+
+# BANG-BANG-SETTINGS
+temperature_control.bed.bang_bang			false	# Set to true to use bang bang control rather than PID
+temperature_control.bed.hysteresis			2.0		# Set to the temperature in degrees C to use as hysteresis for bang bang control
+
+# PID-SETTINGS
+temperature_control.bed.p_factor			80.6	# P factor for PID temperature regulation
+temperature_control.bed.i_factor			10.674	# I factor for PID temperature regulation
+temperature_control.bed.d_factor			152		# D factor for PID temperature regulation
+temperature_control.bed.i_max				255		# Maximum value for the I variable in the PID control. This should usually be set to about the same value as max_pwm ( as a rule of thumb, it is not actually a pwm setting ). This helps with preventing overshoot when initially heating up. If you get a strong ( >10°C ) overshoot on startup, try setting this to a value lower than max_pwm
+
+# M-CODES
+temperature_control.bed.set_m_code			140		# This is the M-code for simply setting the temperature. For example here, the value is 104 so you use M104 S50 to set this module's heater's temperature to 50.
+temperature_control.bed.set_and_wait_m_code	190		# This is the M-code for setting the temperature then waiting for that temperature to be reached before doing anything. For example here, the value is 109 so you use M109 S50 to set this module's heater's temperature to 50 and then wait.
+
+# MANUAL THERMISTOR SETTINGS
+#temperature_control.bed.beta				4066	# Manually set the beta value for your thermistor. This is useful if your thermistor is not in the common pre-defined models.
+#temperature_control.bed.r0					100000	# Manually set the r0 resistance value for your thermistor. This is useful if your thermistor is not in the common pre-defined models. Besides beta and r0 which are properties of your thermistor, you can also set the r1, r2 and t0 values, but those are properties of your board so they usually never have to be changed.
+#temperature_control.bed.chip_select_pin	0.16	# If the sensor is set to max31855, sets the chip select pin for the SPI port. This allows you to have multiple sensors sharing the same SPI port, as long as they each get a chip select ( CS ) pin.
+#temperature_control.bed.spi_channel		0		# If the sensor is set to max31855, SPI channel using which to talk to the thermocouple chip.
+
+
+###################################
+###								###
+###			ENDSTOPS 			###
+###								###
+###################################
+
+endstops_enable				true		# The endstop module is enabled if this is set to true. All of it's parameters are ignored otherwise.
+
+# HOMING
+corexy_homing				true		# Set to true if this machine uses a corexy or a h-bot arm solution
+delta_homing				false		# Set to true if this machine uses a linear_delta arm solution
+scara_homing				false		# Set to true if this machine uses a scara arm solution
+
+move_to_origin_after_home	false		# If set to true, once homing is complete, the machine will move to it's origin point
+homing_order				XYZ			# Optional order in which axis will home, default is they all home at the same time, if this is set it will force each axis to home one at a time in the specified order. For example XZY means : X axis followed by Z, then Y last.
+endstop_debounce_count		100			# Debounce each endstop pin over this number of values. Set to 100 if your endstops are too noisy and give false readings.
+
+alpha_fast_homing_rate_mm_s	50			# Speed, in millimetres/second, at which to home for the alpha actuator ( X axis or alpha tower )
+beta_fast_homing_rate_mm_s	50			# Speed, in millimetres/second, at which to home for the beta actuator ( Y axis or beta tower )
+gamma_fast_homing_rate_mm_s	15			# Speed, in millimetres/second, at which to home for the gamma actuator ( Z axis or gamma tower )
+
+alpha_homing_retract_mm		5			# Distance to retract the alpha actuator ( X axis or alpha tower ) once the endstop is first hit, before re-homing at a slower speed.
+beta_homing_retract_mm		5			# Distance to retract the beta actuator ( Y axis or beta tower ) once the endstop is first hit, before re-homing at a slower speed.
+gamma_homing_retract_mm		2			# Distance to retract the alpha actuator ( Z axis or gamma tower ) once the endstop is first hit, before re-homing at a slower speed.
+
+alpha_slow_homing_rate_mm_s	25			# Speed, in millimetres/second, at which to re-home for the alpha actuator ( X axis or alpha tower ) once the endstop is hit once.
+beta_slow_homing_rate_mm_s	25			# Speed, in millimetres/second, at which to re-home for the beta actuator ( Y axis or beta tower ) once the endstop is hit once.
+gamma_slow_homing_rate_mm_s	2			# Speed, in millimetres/second, at which to re-home for the gamma actuator ( Z axis or gamma tower ) once the endstop is hit once.
+
+# ENDSTOPS
+#alpha_min_endstop			1.24^		# Alpha ( X axis or alpha tower ) minimum limit endstop. Set to nc if not installed on your machine.
+#alpha_max_endstop			1.25^		# Alpha ( X axis or alpha tower ) maximum limit endstop. Set to nc if not installed on your machine.
+#alpha_homing_direction		home_to_min	# In which direction to home. If set to home_to_min, homing ( using the G28 G-code ) will move until it hits the minimum endstop and then set the current position to alpha_min. If set to home_to_max, homing will move until it hits the maximum endstop, and then set the current position to alpha_max
+alpha_limit_enable			false		# If set to true, the machine will stop if one of the alpha ( X axis or alpha tower ) endstops are hit
+alpha_min					0			# This gets loaded after homing when alpha_homing_direction is set to home_to_min and the minimum endstop is hit.
+alpha_max					90			# This gets loaded after homing when alpha_homing_direction is set to home_to_max and the maximum endstop is hit.
+
+#beta_min_endstop			1.26^		# Beta ( Y axis or beta tower ) minimum limit endstop. Set to nc if not installed on your machine.
+#beta_max_endstop			1.27^		# Beta ( Y axis or beta tower ) maximum limit endstop. Set to nc if not installed on your machine.
+#beta_homing_direction		home_to_min	# In which direction to home. If set to home_to_min, homing ( using the G28 G-code ) will move until it hits the minimum endstop and then set the current position to beta_min. If set to home_to_max, homing will move until it hits the maximum endstop, and then set the current position to beta_max
+beta_limit_enable			false		# If set to true, the machine will stop if one of the beta ( Y axis or beta tower ) endstops are hit
+beta_min					0			# This gets loaded after homing when beta_homing_direction is set to home_to_min and the minimum endstop is hit.
+beta_max					90			# This gets loaded after homing when beta_homing_direction is set to home_to_max and the maximum endstop is hit.
+
+#gamma_min_endstop			1.28!		# Gamma ( Z axis or gamma tower ) minimum limit endstop. Set to nc if not installed on your machine.
+gamma_max_endstop			1.28!		# Gamma ( Z axis or gamma tower ) maximum limit endstop. Set to nc if not installed on your machine.
+gamma_homing_direction		home_to_max	# In which direction to home. If set to home_to_min, homing ( using the G28 G-code ) will move until it hits the minimum endstop and then set the current position to gamma_min. If set to home_to_max, homing will move until it hits the maximum endstop, and then set the current position to gamma_max
+gamma_limit_enable			false		# If set to true, the machine will stop if one of the gamma ( Z axis or gamma tower ) endstops are hit
+gamma_min					0			# This gets loaded after homing when gamma_homing_direction is set to home_to_min and the minimum endstop is hit.
+gamma_max					76			# This gets loaded after homing when gamma_homing_direction is set to home_to_max and the maximum endstop is hit.
+
+#DELTA-HOMING
+#alpha_trim					-0.1		# DELTA ONLY Software trim for alpha ( X axis or alpha tower ) stepper endstop (in millimetres ). When the endstop is hit, the axis will move this distance towards the endstop (negative values move endstop away from the endstop )
+#beta_trim					-0.1		# DELTA ONLY Software trim for beta ( Y axis or beta tower ) stepper endstop (in millimetres ). When the endstop is hit, the axis will move this distance towards the endstop (negative values move endstop away from the endstop )
+#gamma_trim					-0.1		# DELTA ONLY Software trim for gamma ( Z axis or gamma tower ) stepper endstop (in millimetres ). When the endstop is hit, the axis will move this distance towards the endstop (negative values move endstop away from the endstop )
+
+
+###################################
+###								###
+###			SWITCHING 			###
+###								###
+###################################
+
+###===============================###
+### Switch module for fan control ###
+###===============================###
+
+switch.fan.enable              true #
+switch.fan.input_on_command    M106 #
+switch.fan.input_off_command   M107 #
+switch.fan.output_pin          2.7  # 0.26 is fanpin on AZSMZ board ver 2.1; D09 = 2.7
+switch.fan.output_type         pwm  # pwm output settable with S parameter in the input_on_comand
+switch.fan.max_pwm             255  # set max pwm for the pin default is 255
+
+
+###===============================================================###
+### Switch module for automatic temperature-controlled Hotend-fan ###
+###===============================================================###
+
+# MAKE HOTEND-FAN-SWITCH FOR HOTEND1:
+temperatureswitch.hotend1.enable				true		# Create and enable a new TemperatureSwitch module if set to true. This module automatically toggles a Switch module at a specified temperature ( read from a TemperatureControl module ).
+temperatureswitch.hotend1.designator			T			# This module does not read temperature by itself, it asks an existing TemperatureControl for it's current temperature. This is used to specify which module to read temperature from, and must match the designator for that module.
+temperatureswitch.hotend1.switch				hotend1fan	# This module does not have any output by itself, instead, it switches the state of an existing Switch module. Here you must speficy the name of that Switch module.
+temperatureswitch.hotend1.threshold_temp		60			# Turn the switch ON above this temperature, and OFF below this temperature. In °C.
+temperatureswitch.hotend1.heatup_poll			15			# Poll temperature at this frequency ( in seconds ) when heating up.
+temperatureswitch.hotend1.cooldown_poll			60			# Poll temperature at this frequency ( in seconds ) when cooling down.
+temperatureswitch.hotend1.trigger				level		# can be level, rising, falling - level is the default
+#temperatureswitch.hotend1.inverted				false		# will turn the switch off when the temp > target and vice versa when set true
+#temperatureswitch.hotend1.arm_mcode			1100		# M code used to arm the edge triggered switch eg M1100 S1 arms it
+
+# USE HOTEND-FAN-SWITCH FOR HOTEND1:
+switch.hotend1fan.enable						true		# Create and enable a new Switch module if set to true. Switch modules use commands or pins as inputs, to send commands or switch pins as output. Note this module is very versatile and can be used to do many different things. Parameters that are not defined will be ignored.
+switch.hotend1fan.input_on_command				M42			# Calling this command sets the switch ON
+switch.hotend1fan.input_off_command				M43			# Calling this command sets the switch OFF
+switch.hotend1fan.output_pin					0.26		# 0.26 or 1.23 # This pin will be set low when the switch is OFF, and high when the switch is ON
+switch.hotend1fan.output_type					digital		# Sets the type of output for the output_pin, if set to digital the pin can only be low or high, and if set to pwm the pin can be set to any Sigma-Delta PWM value between 0 and 255 using the S parameter, for example : M106 S127. If set to hwpwm will use Real PWM, but the selected output pin must be PWM capable. The S value will be the duty cycle in percent, NOTE the default is none which will disable the output entirely.
+
+#switch.hotend1fan.startup_state				false		# Startup state of the switch. If set to false the module is initialized OFF, if set to true the module is initualized ON
+#switch.hotend1fan.fail_safe_set_to				1			# 0 or 1 what to set the output pin to in case of a crash or HALT condition
+#switch.hotend1fan.ignore_on_halt				false		# set to true to not set the fail safe value when a HALT condition is triggered
+
+
+#######################################
+###									###
+###			COMMUNICATION 			###
+###									###
+#######################################
+
+uart0.baud_rate				115200	# Baud rate for the default hardware serial port ( UART0, labelled "Serial" on the board, close to the USB connector ). Defaults to 9600 if undefined, or if the configuration file can not be read.
+second_usb_serial_enable	false	# This enables a second serial port over the USB connection ( for example to have both Pronterface and a terminal connected)
+
+
+#######################################
+###									###
+###			MISCELLANEOUS 			###
+###									###
+#######################################
+	
+leds_disable					false	# Disable the 4 flashing LEDs on the board
+play_led_disable				false	# Disable the "play" status LED
+msd_disable						false	# Disable the MSD ( SD Card access over USB ) when set to true ( requires a special binary, which you can find here, will be ignored without the special binary)
+dfu_enable						false	# For Linux developers, set to true to enable DFU, which allows you to flash new firmwares over USB
+return_error_on_unhandled_gcode	false	# If set to true, return an error if a G-code is received but not understood.
+
+
+#######################################
+###									###
+###			CURRENT CONTROL 		###
+###									###
+#######################################
+
+currentcontrol_module_enable	false	# If set to true, enable digital control of the current settings of the stepper motor drivers. Note : this is dependent on the physical board type, and unless you are designing a new board you shouldn't have to modify these settings
+#digipotchip					mcp4451	# Select the digipot chip with which to control the current for the stepper motor drivers. Supported chips are mcp4451 and ad5206
+#digipot_max_current			2		# Maximum current that can be set
+#digipot_factor					113.33	# Factor for converting the current into digipot values
+#delta_current					1.5		# First extruder stepper motor driver ( M4 ) current in Amperes
+#epsilon_current				1.5		# Second extruder stepper motor driver ( M5 ) current in Amperes
+#zeta_current					1.5		# Current setting for the 6th stepper motor driver current control
+#eta_current					1.5		# Current setting for the 7th stepper motor driver current control
+#theta_current					1.5		# Current setting for the 8th stepper motor driver current control
+
+
+###############################
+###							###
+###			PLAYER 			###
+###							###
+###############################
+
+on_boot_gcode_enable		false				# If set to true, play the on_boot_gcode file when the board boots up
+on_boot_gcode				/sd/on_boot.gcode	# G-code file to play when the board boots. This file will automaticaly be played when the board is done booting up. Useful for example if you want to home your printer when it boots, or do similar tasks.
+leave_heaters_on_suspend	false				# If set to true, heaters are left ON when suspend is received. If set to false, heaters are turned OFF when suspend is received, and then turned back ON when resume is received.
+
+#after_suspend_gcode		G91_G0E-5_G0Z10_G90_G0X-50Y-50	# G-code to execute automatically right after the suspend command is received, this is useful if you want to retract, or turn off heaters etc. The _ character gets converted into space
+#before_resume_gcode		G91_G1E1_G90					# G-code to execute automatically right after the resume command is received, but before resuming execution. This is useful in particular to un-do what was done by after_suspend_gcode. The _ character gets converted into space
+
+
+###################################
+###								###
+###			DISPLAY 			###
+###								###
+###################################
+
+
+# Pause button
+pause_button_enable                          true             #
+
+# Panel See http://smoothieware.org/panel
+panel.enable                                 true             # set to true to enable the panel code
+
+# Example viki2 config for an azteeg miniV2 with IDC cable
+panel.lcd                                    ssd1306_oled             # set type of panel
+panel.spi_channel                            0                 # set spi channel to use P0_18,P0_15 MOSI,SCLK
+panel.spi_cs_pin                             1.22              # set spi chip select
+panel.encoder_a_pin             		   	 4.28!^             # encoder pin
+panel.encoder_b_pin             			 1.27!^             # encoder pin
+panel.click_button_pin                       3.26!^            # click button
+panel.a0_pin                                 2.6               # st7565 needs an a0
+panel.contrast								 17
+#panel.encoder_resolution                    4                 # override number of clicks to move 1 item (default is 4)
+#panel.button_pause_pin                      1.22^             # kill/pause set one of these for the auxilliary button on viki2
+#panel.back_button_pin                       1.22!^            # back button recommended to use this on EXP1
+#panel.buzz_pin                               1.30              # pin for buzzer on EXP2
+#panel.red_led_pin                            2.8               # pin for red led on viki2 on EXP1
+#panel.blue_led_pin                           4.29              # pin for blue led on viki2 on EXP1
+panel.reverse								 1
+panel.external_sd                            true              # set to true if there is an extrernal sdcard on the panel
+panel.external_sd.spi_channel                0                 # set spi channel the sdcard is on
+panel.external_sd.spi_cs_pin                 0.16              # set spi chip select for the sdcard
+panel.external_sd.sdcd_pin                   3.25!^            # sd detect signal (set to nc if no sdcard detect)
+panel.menu_offset                            1                 # some panels will need 1 here
+
+panel.alpha_jog_feedrate                     6000              # x jogging feedrate in mm/min
+panel.beta_jog_feedrate                      6000              # y jogging feedrate in mm/min
+panel.gamma_jog_feedrate                     200               # z jogging feedrate in mm/min
+
+panel.hotend_temperature                     185               # temp to set hotend when preheat is selected
+panel.bed_temperature                        60                # temp to set bed when preheat is selected
+
+
+
+###################################
+###								###
+###			CUSTOM MENU 		###
+###								###
+###################################
+
+# NOTE _ gets converted to space in the menu and commands, | is used to separate multiple commands
+
+custom_menu.menu_name.enable	true		# When set to true, create a new custom menu entry for the panel with the name menu_name. You can create any number of custom entries as long as they have different names.
+
+custom_menu.power_on.enable 	true    	#
+custom_menu.power_on.name       Strom_an    #
+custom_menu.power_on.command    M80         #
+
+custom_menu.power_off.enable    true        #
+custom_menu.power_off.name      Strom_aus   #
+custom_menu.power_off.command   M81         #
+
+custom_menu.fan_on.enable       true        #
+custom_menu.fan_on.name         Luefter_an  #
+custom_menu.fan_on.command      M106        #
+
+custom_menu.fan_off.enable     	true        #
+custom_menu.fan_off.name        Luefter_aus #
+custom_menu.fan_off.command     M107        #
+
+
+###################################
+###								###
+###			Z-PROBE 			###
+###								###
+###################################
+
+zprobe.enable			false		# Set to true to enable the Z-probe module. This is used to scan surfaces, and to calibrate parameters and compensate for non-planar surfaces.
+#zprobe.probe_pin		1.29!^		# Pin the probe is connected to.
+#zprobe.slow_feedrate	5			# Speed in millimetres/second at which the probe seeks a surface.
+#zprobe.fast_feedrate	100			# Speed in millimetres/second at which the probe does fast moves.
+#zprobe.return_feedrate	50			# Speed in millimetres/second at which the probe does the return after a probe.
+#zprobe.debounce_count	100			# Debounce the probe pin over this number of values. Set to 100 if your probe is too noisy and give false readings.
+#zprobe.probe_height	5			# Distance above the bed at which the probing is started, once the bed's height is known.
+
+# Leveling strategy		
+leveling-strategy.three-point-leveling.enable		false		# Set to true to enable the leveling strategy that probes three points to define a plane and then keeps the Z parallel to that plane. This is useful if your Z plate/bed is not perfectly aligned with your XY gantry
+#leveling-strategy.three-point-leveling.point1		100.0,0.0	# The first probe point (X, Y)
+#leveling-strategy.three-point-leveling.point2		200.0,200.0	# The second probe point (X, Y)
+#leveling-strategy.three-point-leveling.point3		0.0,200.0	# The third probe point (X, Y)
+#leveling-strategy.three-point-leveling.home_first	true		# Home the X and Y axes before probing
+#leveling-strategy.three-point-leveling.tolerance	0.03		# The probe tolerance in millimetres, anything less that this will be ignored, default is 0.03mm
+#leveling-strategy.three-point-leveling.probe_offsets	0,0,0 	# The probe offset from nozzle, must be X,Y,Z, default is no offset. This is used if your nozzle is not exactly at the same position as where your tool would be.
+#leveling-strategy.three-point-leveling.save_plane	false		# Set to true to allow the bed plane to be saved with M500, default is false
+#leveling-strategy.delta-calibration.enable			false		# Set to true to enable the delta calibration levelling strategy. This uses the probe to figure out the plane's tilt and arm's radius in a delta machine
+#leveling-strategy.delta-calibration.radius			100			# Radius at which to probe the three points
+#leveling-strategy.delta-calibration.initial_height	10			# the initial height above the bed we stop the initial move down after home to find the bed. This should be a height that is enough that the probe will not hit the bed and is an offset from gamma_max (can be set to 0 if gamma_max takes into account the probe offset)
+
+
+###############################
+###							###
+###			LASER 			###
+###							###
+###############################
+
+laser_module_enable			false	# Whether to activate the laser module at all. All configuration is ignored if false. The laser module is used for laser cutting using a laser diode or CO2 laser tube.
+#laser_module_pin			2.5		# This pin will control the laser. Pulse width will be modulated to vary power output ( PWM ). Note : PWM is available only on pins 2.0 to 2.5, 1.18, 1.20, 1.21, 1.23, 1.24, 1.26, 3.25 and 3.26
+#laser_module_max_power		0.8		# This is the maximum duty cycle that will be applied to the laser. Value is from 0 to 1
+#laser_module_tickle_power	0.0		# This duty cycle will be used for travel moves to keep the laser active without actually burning. Useful for some diode setups. Value is from 0 to 1
+#laser_module_pwm_period	20		# PWM frequency expressed as the period in microseconds
+
+
+###################################
+###								###
+###			NETWORK 			###
+###								###
+###################################
+
+network.enable				false			# If set to true, enable the Ethernet network services
+#network.webserver.enable	true	 		# If set to true, enable the web server service, on port 80, which provides a control and upload web interface
+#network.telnet.enable		true			# If set to true, enable the telnet service, on port 23, which behaves much like a Serial interface
+#network.plan9.enable		false			# If set to true, enable the plan9 network filesystem on port 564 which allows mounting the Smoothieboard
+#network.ip_address			auto			# If set to auto, use DHCP to request an IP address. If set to an IP address, use that address as a static IP.
+#network.ip_mask			255.255.255.0	# If using a static IP, define the mask for the network.
+#network.ip_gateway			192.168.3.1		# If using a static IP, define the gateway for the network.
+#network.mac_override		AB.AB.AB.AB.AB.AB	# If set, override the MAC adress for the Ethernet interface. Only set this if you have a conflict on your network.
+#network.hostname			shapeoko17		# Some DHCP servers accept a hostname for the machine, which then allows you to connect to it using that name instead of it's IP.
