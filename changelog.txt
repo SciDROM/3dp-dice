@@ -1,0 +1,127 @@
+Changelog:
+
+25.09.2017:
+- modified "enclosure/4mm thick aluminium/z_achse.DXF" for less post processing.
+
+26.03.2017:
+- #secondDICEupdate -> several updates at multiple different places. Biggest part: watercooling drivers and hotend.
+   o modified enclosure-parts:
+      ~ bodenplatte.DXF: added 2 bores to match cohesion3d-mini and several other bores for more features.
+      ~ luefterhalter.DXF: redesigned the cutouts for more space inside the electronic compartment
+      ~ traegerplatte_B.DXF: added an additional cutout to make the z-axis motor changeable without 
+        tearing the whole DICE appart. (idea of Andre Reichert, Thanks!)
+      ~ front_DICE.DXF: replaced a frontpart to one with DICE-logo
+      ~ z_achse.DXF: removed the pillar in the middle to get more space inside the electronic compartment
+
+   o added firmware and config for the board "cohesion3d-mini" at "firmware/cohesion3d-mini"
+      ~ the reason for adding this board to the DICE is a very high failure rate of the AZSMZ-mini 
+        and zero to none support from the creator of the AZSMZ-board. The Cohesion3d-Mini does only 
+        support 4 stepper drivers but has more FETs for fans and stuff and should be of a higher
+        quality. It also has better connectors (easier to install wires) and 24V and/or 5V outputs 
+        that remove the need for the tiny stepdown-converters. The creator Ray Kholodovsky is an active 
+        dev with a support-community on g+ and reacts quickly to nearly any question. 
+
+   o added watercooling for the DICE. 
+      ~ With this, the stepper drivers and the hotend are watercooled. This reduces the overall soundlevel,
+        makes a much better cooling of the heatbreak, enables to mount 2 radial blower fans for more
+        print-cooling and it does look cool, too ;)
+         - changed backside: additional cutout for the radiator and repositioned the other bores. The 20mm bore 
+           is now "closed" and can opened if needed.
+         - changed right sidecover: It has a big cutout on the bottom to make room for the big heatsink of the 
+           stepper drivers. I suggest using corrosion-resistant material such as stainless steel.
+         - The heatsink for the stepperdrivers is put on the inside of the sidecover and a matching acrylic sheet
+           on the outside. The acrylic part has 2 holes with G1/4" tap to mount hose-connectors like they are used
+           at PC-watercooling systems.
+         - added a watercooled printhead. The printhead consists of 3 parts. The actual heatsink is made of an 
+           acrylic cover and a matching cooling block. Then the mount for the heatbreak gets scewed to the 
+           cooling block and is designed in a very simple rectangular block. This way, each on is able to easily 
+           adapt other mounts for different heatbreaks. Just the heatsink on any flat surface to cool it.
+         - The watercooled printhead is mounted with 4 screws to the x-carriage with a solid 5mm thick aluminium 
+           plate. Loosening these 4 screws frees the printhead for maintenance.
+         - Watercooling the printhead allows for a much smaller design. This way, there is now room for a second 
+           partcooling fan. Additionally, there are new covers for the fans with an integrated fanshrout and cable-mount.
+         - On top of the DICE, a pump and reservoir needs to be installed. I highly recommend the alphacooling DC-LT
+           pump with matching reservoir for ~50€. The pump-housing has matching mounting points to the DICE. You can
+           easily mount the pump with vibration dampers to reduce noice even further.
+         - The acrylic transparent covers allow for tinted water to match the color of your printed parts.
+
+02.02.2017:
+- added preconfigured Raspberry Pi Image "OctoPi 0.13" with all the needed additions for using the PiUPS
+   o the image file can be found in "DICE/optional/PiUSV+/"
+
+28.01.2017:
+- modified "enclosure/4mm thick aluminium/z_achse.DXF" to make it possible to rout wires for lighting.
+
+08.01.2017:
+- fixed changelog.txt wordwrap in file (line endings got played with)
+- added another magnetic printhead: a direct-extruder
+   o files as .STL, .STEP and Solidworks are located in printed parts -> optional -> magnetic direct printhead 
+     including a timelaps and picture of the assembly
+- added „front_DICE.dxf“ to enclosure -> 4mm thick aluminium
+
+31.12.2016:
+- added folder "Simplify3D"
+   o added some .fff demo-files
+
+18.12.2016:
+- added first Addon for the DICE: magnetic interchangeable printhead
+   o files as .STL, .STEP and Solidworks-Assembly are located in printed parts -> optional -> magnetic printhead  
+
+28.11.2016:
+- changed the recommended bowden tube clip to a better one
+   o http://www.thingiverse.com/thing:936611 bowden tube clip by walter
+
+15.11.2016:
+- modified the feedrates in the example-config file.
+   o Smoothie won't do more than 49980 mm/min at 16µStepping. Adjusted for that.
+
+09.11.2016:
+- added STL file "printed parts/z-endstop-mount-9.5mm(omron)"
+   o this part has a 9.5mm distance between the two holes for screwing in the microswitch. 
+     This is needed for bigger switches like some sort of the Omron-ones.
+
+15.08.2016:
+- added STL file "printed parts/optional/x_carriage_fanholder_for_SKT_hotend/x_carriage_fanholder_for_SKT_hotend.stl"
+   o this part is needed, if you are going to mount the somewhat different hotend from SKT
+
+25.06.2016:
+- added folder "CAD"
+   o added file "CAD/DICE.zip" which contains the complete CAD-Files for Solidworks
+   o added file "CAD/DICE.STEP" which contains the complete CAD-modell in STEP-format
+
+19.06.2016:
+- minor change to DICE/enclosure/2mm thick stainless steel/deckplatte.dxf
+   o reduced the width of the sheet by 1mm to get a better fit and not to scratch the enclosure anylonger, when dismounting the sheet for maintenence.
+
+05.06.2016:
+- update of model z-endstop-mount.STL for easier print and better fit
+
+02.06.2016:
+- added optional/casting form for bed feet
+  o 3 STL files
+  o 4 drawings, including parts list
+
+01.06.2016:
+- added folder „drawings“
+  o added 2 drawings
+
+31.05.2016:
+- added printed part: z-endstop-mount.stl
+  o for mounting the z—max-endstop
+- added optional/raspberry pi camera case
+  o case and joint for the raspicam
+
+29.05.2016:
+- added logo „DICE“ to printed part „x_carriage_fan_holder_1x.stl“
+
+28.05.2016:
+- added /optional/PiUSV+
+  o added files and datasheets for using PiUSV+
+- added /optional/casting_noise_dampening_silicon_rubber_feet
+  o Mold to cast noise-dampening silicon feet for the DICE
+
+
+24.05.2016:
+- added changelog.txt
+- minor updates in BOM (see changelog-tab in BOM)
+- added anti-backlash clip for bowden-pushfit
